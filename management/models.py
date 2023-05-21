@@ -64,7 +64,7 @@ class Absenteeism(models.Model):
 
 class User(models.Model):
     # wrtie here
-    user_id = models.EmailField(primary_key=True)  # email
+    user_email = models.EmailField(primary_key=True)  # email
     user_pw = models.CharField(validators=[MinLengthValidator(8)], max_length=10)  # min length
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, db_column="emp_id")  # foreignkey
 

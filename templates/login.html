@@ -1,0 +1,64 @@
+<!-- home.html -->
+{% load socialaccount %}
+{% providers_media_js %}
+{% load static %}
+
+<html>
+<head>
+    <link rel="stylesheet" href={% static "css/login.css" %}
+</head>
+<body>
+ <div class="wrapper">
+  <div class="container">
+    <!-- <div class="sign-up-container"></div> -->
+    <div class="sign-in-container">
+      <form>
+        <h1>Sign In</h1>
+        <div class="social-links">
+          <div>
+            <a href="{% provider_login_url 'google' %}"> <i class="fa fa-google" aria-hidden="true"></i></a>
+          </div>
+        </div>
+        <span>or use your account</span>
+        <input type="email" placeholder="Email (ex) abcd@gmail.com">
+        <input type="password" placeholder="Password">
+        <button class="form_btn">Sign In</button>
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay-right">
+      <form class="form_1">
+        <h1> Good Luck at Your Work </br>on Today!</h1>
+        <h3> Have a Nice Day :) </h3>
+        <input type="employeecode" placeholder="Personal Code">
+        <input type="employeebirth" placeholder="Birth (ex)">
+      </form>
+        <div class="text-align: center">
+        <button id="signon" class="overlay_btn">Go Working!</button>
+        <button id="signoff" class="overlay_btn">Go Home!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>
+
+{#<!-- home.html -->#}
+{#{% load socialaccount %}#}
+{#{% providers_media_js %}#}
+{##}
+{#<h1>소셜 로그인을 해봐요!</h1>#}
+{##}
+{#<a href = "/accounts/signup">회원가입</a><br>#}
+{##}
+{#{% if user.is_authenticated %}#}
+{#<a href = "/accounts/logout">로그아웃</a>#}
+{#{{user.username}} 님이 로그인중#}
+{##}
+{#{% else %}#}
+{#<a href=" {% provider_login_url 'google' %}">구글 로그인</a><br>#}
+{#로그인 하셔야 합니다.#}
+{##}
+{#{% endif %}#}
