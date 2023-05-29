@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
-    # provider 	구글, 페이스북, 카톡, 깃헙
+    # provider
     'allauth.socialaccount.providers.google',
 
 

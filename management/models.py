@@ -2,8 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MinLengthValidator
 from django.utils.functional import cached_property
-# question = models.ForeignKey(Question, on_delete=models.CASCADE)
-# FK 연결
 
 class Employee(models.Model):
     # here
@@ -14,23 +12,30 @@ class Employee(models.Model):
     emp_address = models.CharField(max_length=45)
     emp_phone = models.CharField(max_length=45)
     emp_account = models.CharField(max_length=45)
+    emp_email = models.EmailField()  # email
+    emp_level = models.CharField(max_length=1, default=1)
     emp_plus = models.IntegerField(default=0)
 
+class Timeinfo(models.Model):
+    tim_id = models.AutoField(primary_key=True)
+    tim_time = models.TimeField()
 
 class Schedulefix(models.Model):
     # here
     sch_id = models.AutoField(primary_key=True)
     sch_date = models.DateField()
-    sch_start = models.DateTimeField()
-    sch_finish = models.DateTimeField()
+    time_start = models.ForeignKey(Timeinfo, related_name="schedule_timestart", on_delete=models.CASCADE, db_column="time_start")  #Starttime
+    time_end = models.ForeignKey(Timeinfo, related_name="schedule_timeend", on_delete=models.CASCADE, db_column="time_end")  #Endtime
+    #sch_start = models.DateTimeField()
+    #sch_finish = models.DateTimeField()
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, db_column="emp_id")
-
 
 class Schedule_exchange(models.Model):
     # write here
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, db_column="employee_id")
-    schedule = models.ForeignKey(Schedulefix, on_delete=models.CASCADE, db_column="sch_id")
-
+    employee1 = models.ForeignKey(Employee, related_name="exchange_employee1", on_delete=models.CASCADE, db_column="emp_id1")
+    employee2 = models.ForeignKey(Employee, related_name="exchange_employee2", on_delete=models.CASCADE, db_column="emp_id2")
+    schedule1 = models.ForeignKey(Schedulefix, related_name="exchange_schedule1", on_delete=models.CASCADE, db_column="sch_id1")
+    schedule2 = models.ForeignKey(Schedulefix, related_name="exchange_schedule2", on_delete=models.CASCADE, db_column="sch_id2")
 
 class Wage_hourly(models.Model):
     # write here
@@ -61,10 +66,3 @@ class Absenteeism(models.Model):
         self.calculate_totalhour()
         self.calculate_totalwage()
         super().save(*args, **kwargs)
-
-class User(models.Model):
-    # wrtie here
-    user_email = models.EmailField(primary_key=True)  # email
-    user_pw = models.CharField(validators=[MinLengthValidator(8)], max_length=10)  # min length
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, db_column="emp_id")  # foreignkey
-
