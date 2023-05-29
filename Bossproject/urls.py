@@ -19,9 +19,9 @@ import management.views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('boss/', include('management.urls')),
     path('', management.views.login, name="login"),
     path('accounts/', include('allauth.urls')),
+    path('mgmt/', include('management.urls')),
 
 ]
 

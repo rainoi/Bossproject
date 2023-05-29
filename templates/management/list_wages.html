@@ -8,29 +8,14 @@
 <table class="table table-striped">
   <tr>
      <th>ID </th>
-     <th>NAME</th>
-     <th>BIRTH</th>
-     <th>GENDER</th>
-     <th>ADDRESS</th>
-     <th>PHONE</th>
-     <th>ACCOUNT</th>
-     <th>PLUS</th>
-     <th>EMAIL</th>
-
+     <th>INFORMATION</th>
+     <th>PRICE</th>
   </tr>
   <tr>
-  {% for employee in employees%}
-{#      {% if employee.emp_email == request.user.email %}#}
-    <td> {{ employee.emp_id }} </td>
-    <td> {{ employee.emp_birth }} </td>
-    <td> {{ employee.emp_gender }} </td>
-    <td> {{ employee.emp_address }} </td>
-    <td> {{ employee.emp_account }} </td>
-    <td> {{ employee.emp_phone }} </td>
-    <td> {{ employee.emp_account }} </td>
-    <td> {{ employee.emp_plus }} </td>
-    <td> {{ employee.emp_email }} </td>
-{#      #{% endif %}#}
+  {% for w in wages%}
+    <td> {{ w.wag_id }} </td>
+    <td> {{ w.wag_info }}</td>
+    <td> {{ w.wag_price }}</td>
     </tr>
   {%endfor%}
 </table>
