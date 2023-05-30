@@ -66,3 +66,9 @@ class Absenteeism(models.Model):
         self.calculate_totalhour()
         self.calculate_totalwage()
         super().save(*args, **kwargs)
+
+class Notice(models.Model):
+    not_id = models.AutoField(primary_key=True)
+    not_title = models.CharField(max_length=50)
+    not_contents = models.CharField(max_length=200)
+    employee_notice = models.ForeignKey(Employee, on_delete=models.CASCADE, db_column="emp_id")
