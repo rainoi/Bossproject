@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -26,8 +25,7 @@ SECRET_KEY = "django-insecure-izn@r-ha9ox8idzmzdgvp9!vz8%d4^r1aqg2ngp$(_+1xm*4lv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -41,14 +39,15 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'management.apps.ManagementConfig',
 
+    'social_django',
+
     # allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 
     # provider
-    'allauth.socialaccount.providers.google',
-
+    # 'allauth.socialaccount.providers.google',
 
 ]
 
@@ -76,13 +75,15 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'social_django.context_processors.backends',  # <- Here
+                'social_django.context_processors.login_redirect',  # <- Here
+
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = "Bossproject.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -93,7 +94,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -113,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -124,7 +123,6 @@ TIME_ZONE = "Asia/Seoul"
 USE_I18N = True
 
 USE_TZ = False
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -143,11 +141,37 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    # 'allauth.account.auth_backends.AuthenticationBackend',
+    'social_core.backends.google.GoogleOAuth2',  # for Google authentication
+    'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
 )
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/'	### 오류가 나면 홈으로 돌아와라
+LOGIN_REDIRECT_URL = '/'  ### 오류가 나면 홈으로 돌아와라
 
 ACCOUNT_EMAIL_REQUIRED = True
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='1044020477843-71h4pm1q7dic9fqcc3j196kbkmevj697.apps.googleusercontent.com'  #Paste CLient ID Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' #Paste Client Secret Key
+
+#without Google+ API
+
+# Google OAuth2 (google-oauth2)
+SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+'https://www.googleapis.com/auth/userinfo.email',
+'https://www.googleapis.com/auth/userinfo.profile'
+]
+
+# Google+ SignIn (google-plus)
+SOCIAL_AUTH_GOOGLE_PLUS_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_PLUS_SCOPE = [
+'https://www.googleapis.com/auth/plus.login',
+'https://www.googleapis.com/auth/userinfo.email',
+'https://www.googleapis.com/auth/userinfo.profile'
+]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
+SOCIAL_AUTH_GOOGLE_PLUS_USE_DEPRECATED_API = True

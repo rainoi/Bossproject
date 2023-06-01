@@ -20,8 +20,10 @@ import management.views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', management.views.login, name="login"),
-    path('accounts/', include('allauth.urls')),
+    # path('accounts/', include('allauth.urls')),
+    path('auth/', include('social_django.urls', namespace='social')),
     path('mgmt/', include('management.urls')),
+    # path('logout/', logout, name='logout'),
 
 ]
 

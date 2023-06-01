@@ -22,17 +22,17 @@
   {% for employee in employees%}
 {#      {% if employee.emp_email == request.user.email %}#}
     <td> {{ employee.emp_id }} </td>
+    <td> {{ employee.emp_name }} </td>
     <td> {{ employee.emp_birth }} </td>
     <td> {{ employee.emp_gender }} </td>
     <td> {{ employee.emp_address }} </td>
-    <td> {{ employee.emp_account }} </td>
     <td> {{ employee.emp_phone }} </td>
     <td> {{ employee.emp_account }} </td>
     <td> {{ employee.emp_plus }} </td>
     <td> {{ employee.emp_email }} </td>
 {#      #{% endif %}#}
     </tr>
-  {%endfor%}
+  {% endfor %}
 </table>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
