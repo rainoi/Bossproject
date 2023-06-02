@@ -17,14 +17,16 @@
                 <h1>Sign In</h1>
                 <div class="social-links">
                     <div>
-                        <a href="{% url 'social:begin' 'google-oauth2' %}?next=/mgmt/list_employees/"> <i class="fa fa-google"
-                                                                                                   aria-hidden="true"></i></a>
+                        <a href="{% url 'social:begin' 'google-oauth2' %}?next=/mgmt/list_employees/"> <i
+                                class="fa fa-google"
+                                aria-hidden="true"></i></a>
                     </div>
                 </div>
                 <span>or use your account</span>
                 <input type="text" name="username" placeholder="ID">
                 <input type="password" name="password" placeholder="Password">
                 <button type="submit" class="form_btn">Sign In</button>
+
             </form>
             {% if error %}
                 <p>{{ error }}</p>
