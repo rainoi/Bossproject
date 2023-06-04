@@ -1,8 +1,8 @@
 /* MaterialDesignIcons.com */
 @font-face {
   font-family: "Material Design Icons";
-  src: url("materialdesignicons-webfont.eot?v=2.2.43");
-  src: url("materialdesignicons-webfont.eot?#iefix&v=2.2.43") format("embedded-opentype"), url("materialdesignicons-webfont.woff2?v=2.2.43") format("woff2"), url("materialdesignicons-webfont.woff?v=2.2.43") format("woff"), url("materialdesignicons-webfont.ttf?v=2.2.43") format("truetype"), url("materialdesignicons-webfont.svg?v=2.2.43#materialdesigniconsregular") format("svg");
+  src: url("static/vendors/iconfonts/mdi/fonts/materialdesignicons-webfont.eot?v=2.2.43");
+  src: url("static/vendors/iconfonts/mdi/fonts/materialdesignicons-webfont.eot?#iefix&v=2.2.43") format("embedded-opentype"), url("static/vendors/iconfonts/mdi/fonts/materialdesignicons-webfont.woff2?v=2.2.43") format("woff2"), url("static/vendors/iconfonts/mdi/fonts/materialdesignicons-webfont.woff?v=2.2.43") format("woff"), url("static/vendors/iconfonts/mdi/fonts/materialdesignicons-webfont.ttf?v=2.2.43") format("truetype"), url("static/vendors/iconfonts/mdi/fonts/materialdesignicons-webfont.svg?v=2.2.43#materialdesigniconsregular") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,6 +16,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 
 .mdi-access-point:before {
   content: "\F002";

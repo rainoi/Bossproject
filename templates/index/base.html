@@ -1,13 +1,18 @@
 {% load socialaccount %}
 {% providers_media_js %}
+{% load static %}
 
 <html>
 <head>
     <title>{% block title %} SideBar Base Ex {% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">#}
-    <link rel="stylesheet" href="/static/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+    {#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">#}
+    {#    <link rel="stylesheet" href="/static/vendors/iconfonts/mdi/css/materialdesignicons.min.css">#}
+    {#    <link rel="stylesheet" href="/static/vendors/iconfonts/mdi/css/materialdesignicons.css">#}
+    <link rel="stylesheet" href="{% static "vendors/iconfonts/mdi/css/materialdesignicons.css" %}">
+    <link rel="stylesheet" href="{% static "vendors/iconfonts/mdi/css/materialdesignicons.min.css" %}">
     <link rel="stylesheet" href="/static/vendors/css/vendor.bundle.base.css">
+
     <!-- endinject -->
     <!-- inject:css -->
     <link rel="stylesheet" href="/static/css/style.css">
@@ -38,7 +43,8 @@
             <ul class="navbar-nav navbar-nav-right ">
                 <li class="nav-item nav-profile ">
                     <div class="nav-profile-text">
-                        <span class="mb-5 text-black"> Welcome! {{ user.first_name }} is Working-! </span>
+                        <span class="mb-5 text-black"> Welcome! <span
+                                class="bg-gradient-success"> {{ user.first_name }}</span> is Working-! </span>
                     </div>
                 </li>
                 <li class="nav-item nav-logout d-none d-lg-block">
@@ -71,34 +77,34 @@
                         <div><i class="mdi mdi-account-check text-success nav-profile-badge"></i></div>
                         <div class="nav-profile-text d-flex flex-column">
                             <span class="font-weight-bold mb-2"> {{ user.first_name }} </span>
-{#                            <span class="text-secondary text-small">Employee</span>#}
+                            {#                            <span class="text-secondary text-small">Employee</span>#}
                         </div>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/management/list_wages.html">
                         <span class="menu-title">Notice</span>
-                        <i class="mdi mdi-home menu-icon"></i>
+                        <img src="{% static 'image/bulletin-board.svg' %}" alt="Bulletin Board Icon">
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'list_employees' %}">
                         <span class="menu-title">Employee</span>
-                        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                        <img src="{% static 'image/card-account-details-outline.svg' %}" alt="">
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         <!--            <a class="nav-link" href="pages/forms/basic_elements.html">-->
                         <span class="menu-title">Schedule</span>
-                        <i class="mdi mdi-calendar-check menu-icon"></i>
+                        <img src="{% static 'image/calendar-month.svg' %}" alt="">
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'list_statement' %}">
                         <!--            <a class="nav-link" href="pages/forms/basic_elements.html">-->
                         <span class="menu-title">Statements</span>
-                        <i class="mdi mdi-contacts menu-icon"></i>
+                        <img src="{% static 'image/cash.svg' %}" alt="">
                     </a>
                 </li>
             </ul>

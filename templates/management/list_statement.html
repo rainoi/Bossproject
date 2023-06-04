@@ -1,56 +1,70 @@
 {% extends "index/base.html" %}
+{% load humanize %}
 {% block content %}
-    <html>
-    <body>
+    {#    <html>#}
+    {#    <body>#}
 
     <div class="container">
-        <form action="/management/list_statement" method="get">
-            <select name="year">
-                <option value="2023">2023년</option>
-                <option value="2022">2022년</option>
-                <option value="2021">2021년</option>
-            </select>
-            <select name="employee">
-                <option>employee</option>
-                <option value="1">Lee</option>
-                <option value="2">Kim</option>
-                <option value="3">Park</option>
 
-            </select>
-            <input type="text" name="month">
-            <input type="submit" value="Search">
-        </form>
-        {% if lists %}
-            <p>{{ message }}</p>
-            <table class="table table-striped">
-                <thead style="border-top: 1px solid #dee2e6;">
-                <tr style="border-top: 1px solid black; border-bottom: 1px solid black;" class="text-center">
-                    <th style="font-weight: bold; font-size: 16px;">EMPLOYEE</th>
-                    <th style="font-weight: bold; font-size: 16px;">START</th>
-                    <th style="font-weight: bold; font-size: 16px;">END</th>
-                    <th style="font-weight: bold; font-size: 16px;">WORK TIME</th>
-                    <th style="font-weight: bold; font-size: 16px;">WAGE</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for abs_id in lists %}
-                    <td> {{ abs_id.employee_id }} </td>
-                    <td> {{ abs_id.abs_start|date:'Y년 m월 d일/ H : i' }}</td>
-                    <td> {{ abs_id.abs_finish|date:'Y년 m월 d일/ H : i' }}</td>
-                    <td> {{ abs_id.abs_totalmin }}</td>
-                    <td> {{ abs_id.abs_totalwage }}</td>
+        <div class="container">
+            <form action="/mgmt/sta" method="get">
+                <select name="year">
+                    <option value="">전체</option>
+                    {% for year in years %}
+                        <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}년
+                        </option>
+                    {% endfor %}
+                </select>
+                <select name="month">
+                    <option value="">전체</option>
+                    {% for month in months %}
+                        <option value="{{ month.0 }}"
+                                {% if month.0 == selected_month %}selected{% endif %}>{{ month.1 }}</option>
+                    {% endfor %}
+                </select>
+                <select name="employee">
+                    <option value="">모든 사원</option>
+                    {% for employee in employees %}
+                        <option value="{{ employee.emp_name }}"
+                                {% if employee.emp_name == selected_employee_name %}selected{% endif %}>{{ employee.emp_name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Search">
+            </form>
+
+            {% if lists %}
+                <p>
+                    {% if selected_year %}{{ selected_year }}년 {% endif %}
+                    {% if selected_month %}{{ selected_month }}월 {% endif %}
+                    {% if selected_employee_name %}{{ selected_employee_name }}{% else %}전체{% endif %}
+                    명세서
+                </p>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>EMPLOYEE</th>
+                        <th>START</th>
+                        <th>END</th>
+                        <th>WORK TIME</th>
+                        <th>WAGE</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <p><strong>work time</strong> = {{ total.total_sum }} minute / <strong>salary</strong>
-                = {{ total.total_wage }} ₩</p>
-        {% else %}
-            <p>검색 결과가 없습니다.</p>
-        {% endif %}
-
-
-    </div>
-    </body>
-    </html>
+                    </thead>
+                    <tbody>
+                    {% for abs_id in lists %}
+                        <tr>
+                            <td>{{ abs_id.employee.emp_name }}</td>
+                            <td>{{ abs_id.abs_start|date:'Y년 m월 d일 / H:i' }}</td>
+                            <td>{{ abs_id.abs_finish|date:'Y년 m월 d일 / H:i' }}</td>
+                            <td>{{ abs_id.abs_totalmin|intcomma }}분</td>
+                            <td>₩ {{ abs_id.abs_totalwage|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p><strong>총 근무 시간:</strong> {{ total_sum|intcomma }}분</p>
+                <p><strong>총 급여:</strong> ₩ {{ total_wage|intcomma }}</p>
+            {% else %}
+                <p>검색 결과가 없습니다.</p>
+            {% endif %}
+        </div>
 {% endblock %}

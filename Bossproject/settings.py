@@ -70,6 +70,9 @@ TEMPLATES = [
         ,
         "APP_DIRS": True,
         "OPTIONS": {
+            "libraries": {
+                'humanize': 'django.contrib.humanize.templatetags.humanize',
+            },
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -152,25 +155,24 @@ LOGIN_REDIRECT_URL = '/'  ### 오류가 나면 홈으로 돌아와라
 
 ACCOUNT_EMAIL_REQUIRED = True
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1044020477843-71h4pm1q7dic9fqcc3j196kbkmevj697.apps.googleusercontent.com'  # Paste CLient ID Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Paste Client Secret Key
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='1044020477843-71h4pm1q7dic9fqcc3j196kbkmevj697.apps.googleusercontent.com'  #Paste CLient ID Key
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' #Paste Client Secret Key
-
-#without Google+ API
+# without Google+ API
 
 # Google OAuth2 (google-oauth2)
 SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-'https://www.googleapis.com/auth/userinfo.email',
-'https://www.googleapis.com/auth/userinfo.profile'
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile'
 ]
 
 # Google+ SignIn (google-plus)
 SOCIAL_AUTH_GOOGLE_PLUS_IGNORE_DEFAULT_SCOPE = True
 SOCIAL_AUTH_GOOGLE_PLUS_SCOPE = [
-'https://www.googleapis.com/auth/plus.login',
-'https://www.googleapis.com/auth/userinfo.email',
-'https://www.googleapis.com/auth/userinfo.profile'
+    'https://www.googleapis.com/auth/plus.login',
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile'
 ]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True

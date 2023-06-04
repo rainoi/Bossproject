@@ -1,8 +1,8 @@
 from django.urls import path
-
 import management.views
 from management import views
 from .views import list_employees, login
+
 
 urlpatterns = [
     path('', views.list_wages, name='list_wages'),

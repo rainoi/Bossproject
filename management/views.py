@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Wage_hourly, Employee
 from django.contrib.auth.decorators import login_required
 from allauth.account.models import EmailAddress
@@ -40,7 +40,7 @@ def list_employees(request):
         email = user.email
         employees = Employee.objects.filter(emp_email=email)
 
-    return render(request, 'management/list_employees.html', {'employees': employees})
+    return render(request, 'management/employee_list.html', {'employees': employees})
 
 
 def create_employee(request):
@@ -77,35 +77,63 @@ def logout(request):
     return redirect('/')
 
 
+# 필터링 해보다가 안되는거
 def list_statement(request):
-    month = request.GET.get('month')
-    year = request.GET.get('year')
-    employee = request.GET.get('employee')
+    selected_month = request.GET.get('month')
+    selected_year = request.GET.get('year')
+    selected_employee_name = request.GET.get('employee')
 
-    if not year:
-        year = datetime.now().year
-    if month and year and employee:
-        message = f'{year}년 {month}월 {employee}의 명세서'
-        lists = Absenteeism.objects.filter(abs_start__year=year, abs_start__month=month, employee=employee)
+    if not selected_year:
+        selected_year = datetime.now().year
+
+    if selected_month and selected_year and selected_employee_name:
+        selected_employee_id = Employee.objects.get(emp_name=selected_employee_name).emp_id
+        message = f'{selected_year}년 {selected_month}월 {selected_employee_name}의 명세서'
+        lists = Absenteeism.objects.filter(
+            abs_start__year=selected_year,
+            abs_start__month=selected_month,
+            employee=selected_employee_id
+        )
+    elif selected_month and selected_year:
+        message = f'{selected_year}년 {selected_month}월의 명세서'
+        lists = Absenteeism.objects.filter(
+            abs_start__year=selected_year,
+            abs_start__month=selected_month
+        )
+    elif selected_year and selected_employee_name:
+        selected_employee_id = Employee.objects.get(emp_name=selected_employee_name).emp_id
+        message = f'{selected_year}년 {selected_employee_name}의 명세서'
+        lists = Absenteeism.objects.filter(
+            abs_start__year=selected_year,
+            employee=selected_employee_id
+        )
+    elif selected_year:
+        message = f'{selected_year}년의 명세서'
+        lists = Absenteeism.objects.filter(
+            abs_start__year=selected_year
+        )
     else:
         message = '검색어를 입력하세요.'
         lists = Absenteeism.objects.order_by('employee')
-    total = lists.aggregate(total_sum=Sum('abs_totalmin'), total_wage=Sum('abs_totalwage'))
 
-    return render(request, 'management/list_statement.html', {'message': message, 'lists': lists, 'total': total})
+    total_sum = lists.aggregate(total_sum=Sum('abs_totalmin'))['total_sum'] or 0
+    total_wage = lists.aggregate(total_wage=Sum('abs_totalwage'))['total_wage'] or 0
 
-    def convert_to_hours_minutes(total_minutes):
-        hours = total_minutes // 60
-        minutes = total_minutes % 60
-        return f'{hours}시간 {minutes}분'
-
-    context = {
+    return render(request, 'management/list_statement.html', {
         'message': message,
         'lists': lists,
-        'total_sum': convert_to_hours_minutes(total['total_sum']),
-        'total_wage': total['total_wage']
-    }
-    return render(request, "management/list_statement.html", context)
+        'selected_month': selected_month,
+        'selected_year': selected_year,
+        'selected_employee_name': selected_employee_name,
+        'total_sum': total_sum,
+        'total_wage': total_wage,
+        'years': range(2021, datetime.now().year + 1),
+        'months': [
+            (1, '1월'), (2, '2월'), (3, '3월'), (4, '4월'), (5, '5월'), (6, '6월'),
+            (7, '7월'), (8, '8월'), (9, '9월'), (10, '10월'), (11, '11월'), (12, '12월')
+        ],
+        'employees': Employee.objects.all()
+    })
 
 
 from django.http import JsonResponse
@@ -121,38 +149,3 @@ def save_absenteeism(request):
         }
         return JsonResponse(response_data)
         # return HttpResponse(status=204)
-
-# def social_login(request):
-#     # 현재 로그인한 사용자의 소셜 계정 정보 가져오기
-#     social_account = SocialAccount.objects.get(user=request.user)
-#     social_email = social_account.extra_data.get('email', '')  # 이메일 정보 가져오기
-#
-#     if social_email:
-#         # 이메일로 사용자 확인
-#         User = get_user_model()
-#         user = User.objects.filter(emp_email=social_email).first()
-#
-#         if user:
-#             # 사용자가 존재하는 경우
-#             user_id = user.id
-#             # 사용자 고유의 페이지로 리다이렉트
-#             return redirect(f'/page/{user_id}/')
-#
-#     # 사용자가 존재하지 않거나 이메일 정보가 없는 경우 등에 대한 처리
-#     return redirect('/')
-
-
-# Create your views here.
-
-# def list_employees(request):
-#         employees = Employee.objects.all()
-#         return render(request, 'management/list_employees', {'employees' : employees})
-#
-# def register_worktime(request):
-#     form = UserForm(request.POST or None)
-#
-#     if form.is_valid():
-#         form.save()
-#         return redirect('Absenteeism')
-#
-#     return render(request, 'management/login.html', {'form': form})
